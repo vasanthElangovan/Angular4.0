@@ -2542,7 +2542,7 @@ export class AppComponent {
             return Object.keys(i)
         }).join("/").split("/");
         this.pipearray(this.result.values, "Enterprise (SC, GTS, AS)", "Assets");
-       this.selectedValue["Sector"]= new Array();
+       
         Array_assets = this.consolitedData["Assets"];
         this.consolitedData["Assets"] = new Array();
         this.selectedValue["Assets"] = new Array();
@@ -2550,7 +2550,7 @@ export class AppComponent {
 
             self.pipearray(self.result.values, item, item, "asset_type");
             self.consolitedData["Assets"].push({[item]: self.consolitedData[item] });
-            self.selectedValue["Assets"].push({[item]: new Array()});
+            self.selectedValue["Assets"].push({[item]: new Object()});
             delete self.consolitedData[item];
             
         });
@@ -2647,10 +2647,10 @@ export class AppComponent {
     }
     ReadValues(id: any) {
 
-       /*  var selectedvalue = (id.srcElement || id.target).value;
+        var selectedvalue = (id.srcElement || id.target).value;
         if (this.selectedValue.indexOf(selectedvalue) == -1) this.selectedValue.push(selectedvalue);
         this.deleteJsonObject(parseInt(id.srcElement.dataset.index));
-        this.pipearray(this.result.values, this.selectedValue[parseInt(id.srcElement.dataset.index)], this.selectedValue[parseInt(id.srcElement.dataset.index)]); */
+        this.pipearray(this.result.values, this.selectedValue[parseInt(id.srcElement.dataset.index)], this.selectedValue[parseInt(id.srcElement.dataset.index)]);
 
     }
     deleteJsonObject(index: Number) {
@@ -2695,7 +2695,7 @@ export class AppComponent {
             return true;
         }
     }
-    /* onselect(element: any, item: string, parent?: string) {
+    onselect(element: any, item: string, parent?: string) {
         var ElementID = element.target.id;
         var _self = this;
         this.seletedText = "";
@@ -2705,14 +2705,14 @@ export class AppComponent {
             if (element.target.checked) {
                 console.log(this.consolitedData[parent]);
                 //this.consolitedData[item][childnode].forEach(i => this.selectedValue[i] = true);
-                if ((this.consolitedData[parent][item])  instanceof Object || (this.consolitedData[parent][item]) instanceof Array)
+                if (typeof (this.consolitedData[parent][item]) == 'object' || typeof (this.consolitedData[parent][item]) == 'Array')
                     this.selectedValue[parent][item] = { [this.ReadKeys(this.consolitedData[parent][item])[0]]: this.consolitedData[parent][item][this.ReadKeys(this.consolitedData[parent][item])[0]] };
                 //this.consolitedData[parent][item].map(i => { return Object.keys(i) });
                 else this.selectedValue[parent].push(item);
                
             }
             else {
-                if ((this.consolitedData[parent][item]) instanceof  Object || (this.consolitedData[parent][item]) instanceof Array)
+                if (typeof (this.consolitedData[parent][item]) == 'object' || typeof (this.consolitedData[parent][item]) == 'Array')
                     this.selectedValue[parent][item] = { [this.ReadKeys(this.consolitedData[parent][item])[0]]: []};
                 else this.selectedValue[parent].splice(element.target.tabIndex,1);
             }
@@ -2740,58 +2740,5 @@ export class AppComponent {
         else this.seletedText = this.selectedValue[item].map(i => { return i }).join("\n");
         this.seletedText = JSON.stringify(this.selectedValue);
 
-    } */
-	
-	findKeybasedValue(object:any,key:string){
-		var result=null;
-		try{
-		for( var k in object){
-			if(k==key)  throw k;
-			
-		}
-      return result;		
-		}
-		catch(ex){
-			console.log(k);
-			return result;
-		}
-		
-	}
-	ConvertStringfy(){
-        this.seletedText = JSON.stringify(this.selectedValue);
-        console.log(this.consolitedData);
     }
-     deepCopy(obj:any) {
-    var copy;
-
-    // Handle the 3 simple types, and null or undefined
-    if (null == obj || "object" != typeof obj) return obj;
-
-    // Handle Date
-    if (obj instanceof Date) {
-        copy = new Date();
-        copy.setTime(obj.getTime());
-        return copy;
-    }
-
-    // Handle Array
-    if (obj instanceof Array) {
-        copy = [];
-        for (var i = 0, len = obj.length; i < len; i++) {
-            copy[i] = this.deepCopy(obj[i]);
-        }
-        return copy;
-    }
-
-    // Handle Object
-    if (obj instanceof Object) {
-        copy = {};
-        for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) copy[attr] = this.deepCopy(obj[attr]);
-        }
-        return copy;
-    }
-
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-}
 }

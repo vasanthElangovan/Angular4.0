@@ -20,10 +20,10 @@
         <div class="acidjs-css3-treeview">
             <ul *ngFor="let drop of ReadKeys(consolitedData);let i = index">
                 <li>
-                    <input (change)="(selectedValue[drop].length==consolitedData[drop].length)?selectedValue[drop]=[]:selectedValue[drop]=deepCopy(consolitedData[drop]);ConvertStringfy()" type="checkbox"  [checked]="(selectedValue[drop].length== consolitedData[drop].length)" id="{{drop}}" /><label for="{{drop}}">{{drop}}</label>
+                    <input (change)="onselect($event,drop)" type="checkbox"  [checked]="(selectedValue[drop]!=undefined && selectedValue[drop].length== consolitedData[drop].length)" id="item-{{i}}" /><label for="item-{{i}}">{{drop}}</label>
                     <ul *ngIf="drop!='Assets'">
                         <li *ngFor="let item of consolitedData[drop]; let j = index">
-                            <input (change)="(selectedValue[drop].indexOf(item)!=-1)? selectedValue[drop].splice(selectedValue[drop].indexOf(item),1):selectedValue[drop].push(item);ConvertStringfy()" [checked]="(selectedValue[drop].indexOf(item)!=-1)"  tabindex="{{j}}"  type="checkbox" id="{{drop}}-{{item}}" /><label for="{{drop}}-{{item}}">{{item}}</label>
+                            <input (change)="onselect($event,item,drop)" [checked]="(selectedValue[drop]!=undefined && selectedValue[drop][j]==item)"  tabindex="{{j}}"  type="checkbox" id="item-{{i}}-{{j}}" /><label for="item-{{i}}-{{j}}">{{item}}</label>
                         </li>
 
 
@@ -33,9 +33,9 @@
 
                             <ul *ngFor="let assetslist of consolitedData[drop];let k = index">
                                 <li>
-                                    <input  (change)="selectedValue[drop][k][ReadKeys(assetslist)]=(selectedValue[drop][k][ReadKeys(assetslist)].length==consolitedData[drop][k][ReadKeys(assetslist)].length)?[]:deepCopy(consolitedData[drop][k][ReadKeys(assetslist)]);ConvertStringfy()" [checked]="(selectedValue[drop][k][ReadKeys(assetslist)].length==consolitedData[drop][k][ReadKeys(assetslist)].length)" type="checkbox" id="{{drop}}-{{k}}-{{ReadKeys(assetslist)}}" /><label for="{{drop}}-{{k}}-{{ReadKeys(assetslist)}}">{{ReadKeys(assetslist)}}</label>
+                                    <input  (change)="onselect($event,k,drop)" [checked]="(selectedValue[drop][ReadKeys(assetslist)]!=undefined  && selectedValue[drop][ReadKeys(assetslist)].length==consolitedData[drop][ReadKeys(assetslist)].length)" type="checkbox" id="item-{{i}}-{{k}}" /><label for="item-{{i}}-{{k}}">{{ReadKeys(assetslist)}}</label>
                                     <ul *ngFor="let assetitem of consolitedData[drop][k][ReadKeys(assetslist)];let l = index">
-                                        <li> <input  (change)="(selectedValue[drop][k][ReadKeys(assetslist)].indexOf(assetitem)!=-1)? selectedValue[drop][k][ReadKeys(assetslist)].splice(selectedValue[drop][k][ReadKeys(assetslist)].indexOf(assetitem),1):selectedValue[drop][k][ReadKeys(assetslist)].push(assetitem);ConvertStringfy()" [checked]="selectedValue[drop][k][ReadKeys(assetslist)].indexOf(assetitem)!=-1"  type="checkbox" id="{{drop}}-{{k}}-{{ReadKeys(assetslist)}}-{{l}}" /><label for="{{drop}}-{{i}}-{{k}}-{{l}}">{{assetitem}}</label></li>
+                                        <li> <input  (change)="onselect($event,assetitem)" [checked]="selectedValue[drop][k][ReadKeys(assetslist)][l]!=undefined"  type="checkbox" id="item-{{i}}-{{k}}-{{l}}" /><label for="item-{{i}}-{{k}}-{{l}}">{{assetitem}}</label></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -49,7 +49,7 @@
         </div>
     </div>
     <div style="width:60%;float:right">
-        <textarea  [value]="seletedText" [(ngModel)]="seletedText" class="form-controll"  readonly style="width:80%; height:300px">
+        <textarea class="" [value]="seletedText" [(ngModel)]="seletedText"  readonly style="width:80%; height:300px">
 
         </textarea>
         </div>
